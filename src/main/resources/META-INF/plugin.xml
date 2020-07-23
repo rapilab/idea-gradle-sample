@@ -1,5 +1,5 @@
 <idea-plugin>
-    <id>org.jetbrains.plugins.template</id>
+    <id>com.phodal.gradal</id>
     <name>Template</name>
     <vendor>JetBrains</vendor>
 
@@ -8,12 +8,19 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="org.jetbrains.plugins.template.services.MyApplicationService"/>
-        <projectService serviceImplementation="org.jetbrains.plugins.template.services.MyProjectService"/>
+        <applicationService serviceImplementation="com.phodal.gradal.plugins.services.MyApplicationService"/>
+        <projectService serviceImplementation="com.phodal.gradal.plugins.services.MyProjectService"/>
     </extensions>
 
     <projectListeners>
-        <listener class="org.jetbrains.plugins.template.listeners.MyProjectManagerListener"
+        <listener class="com.phodal.gradal.plugins.listeners.MyProjectManagerListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </projectListeners>
+    <actions>
+        <action id="Gradle.Get"
+                class="com.phodal.gradal.plugins.actions.GetGradleAction"
+                text="Run Get Gradle" description="Run Get Gradle">
+            <add-to-group group-id="ToolsMenu" anchor="first"/>
+        </action>
+    </actions>
 </idea-plugin>
