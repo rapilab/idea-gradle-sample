@@ -14,8 +14,8 @@ import org.jetbrains.annotations.NotNull
 import java.io.File
 
 class GradleTasksExecutorImpl {
-    @Volatile
-    private var myProgressIndicator: ProgressIndicator = EmptyProgressIndicator()
+//    @Volatile
+//    private var myProgressIndicator: ProgressIndicator = EmptyProgressIndicator()
 
     @NotNull
     private fun getLogger(): Logger {
@@ -23,8 +23,8 @@ class GradleTasksExecutorImpl {
     }
 
     fun executeTask(project: Project, projectPath: String) {
-        myProgressIndicator.start()
-        myProgressIndicator.text = "Hello"
+//        myProgressIndicator.start()
+//        myProgressIndicator.text = "Hello"
 
         val isBuildWithGradle = GradleProjectInfo.isBuildWithGradle(project)
 
@@ -46,7 +46,7 @@ class GradleTasksExecutorImpl {
             connection.use {
                 operation.run();
             }
-            myProgressIndicator.stop()
+//            myProgressIndicator.stop()
         }
         getLogger().info(logMessage)
     }
