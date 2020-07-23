@@ -39,10 +39,8 @@ repositories {
     maven { setUrl("https://repo.gradle.org/gradle/libs-releases") }
 }
 dependencies {
-    implementation("org.gradle:gradle-tooling-api:5.2.1") {
-        compileOnly("org.slf4j:slf4j-api:1.7.30")
-        compileOnly("org.slf4j:slf4j-log4j12:1.7.30")
-    }
+    implementation("org.gradle:gradle-tooling-api:5.2.1")
+    runtimeOnly("org.slf4j:slf4j-simple:1.7.10")
 
     implementation(kotlin("stdlib-jdk8"))
 //    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.10.0")
