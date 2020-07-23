@@ -1,6 +1,8 @@
 package com.phodal.gradal.plugins.gradle
 
 import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.progress.EmptyProgressIndicator
+import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.project.Project
 import com.intellij.util.ArrayUtil
 import com.intellij.util.SystemProperties
@@ -12,12 +14,18 @@ import org.jetbrains.annotations.NotNull
 import java.io.File
 
 class GradleTasksExecutorImpl {
+    @Volatile
+    private var myProgressIndicator: ProgressIndicator = EmptyProgressIndicator()
+
     @NotNull
     private fun getLogger(): Logger {
         return Logger.getInstance(GradleTasksExecutorImpl::class.java)
     }
 
     fun executeTask(project: Project, projectPath: String) {
+        myProgressIndicator.start()
+        myProgressIndicator.text = "Hello"
+
         val isBuildWithGradle = GradleProjectInfo.isBuildWithGradle(project)
 
         val connector = GradleConnector.newConnector();
@@ -38,6 +46,7 @@ class GradleTasksExecutorImpl {
             connection.use {
                 operation.run();
             }
+            myProgressIndicator.stop()
         }
         getLogger().info(logMessage)
     }
