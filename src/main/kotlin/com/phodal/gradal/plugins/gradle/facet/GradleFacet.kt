@@ -24,7 +24,7 @@ class GradleFacet(module: Module,
             return FacetManager.getInstance(module).getFacetByType(getFacetTypeId())
         }
 
-        private fun getFacetTypeId(): FacetTypeId<GradleFacet> {
+        fun getFacetTypeId(): FacetTypeId<GradleFacet> {
             return TYPE_ID
         }
 
