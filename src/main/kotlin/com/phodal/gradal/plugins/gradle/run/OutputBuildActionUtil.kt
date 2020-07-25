@@ -14,7 +14,7 @@ class OutputBuildActionUtil {
         private fun getModuleGradlePaths(modules: Array<@NotNull Module>): Set<String> {
             val gradlePaths = mutableSetOf<String>()
             modules.mapNotNullTo(gradlePaths) {
-                val facet = FacetManager.getInstance(it).getFacetByType(GradleFacet.getFacetTypeId())
+                val facet = FacetManager.getInstance(it).getFacetByType(GradleFacet.facetTypeId)
                 facet!!.configuration.GRADLE_PROJECT_PATH
             }
             return gradlePaths

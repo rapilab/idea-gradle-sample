@@ -10,11 +10,6 @@
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="com.phodal.gradal.plugins.services.MyApplicationService"/>
         <projectService serviceImplementation="com.phodal.gradal.plugins.services.MyProjectService"/>
-
-<!--        <toolWindow id="MyPlugin"-->
-<!--                    icon="PluginIcons.Console.Python"-->
-<!--                    anchor="bottom"-->
-<!--                    factoryClass="com.intellij.execution.dashboard.RunDashboardToolWindowFactory"/>-->
     </extensions>
 
     <projectListeners>
