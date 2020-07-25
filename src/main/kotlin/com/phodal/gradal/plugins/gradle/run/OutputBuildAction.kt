@@ -10,7 +10,7 @@ import java.io.Serializable
 import java.util.*
 
 class OutputBuildAction internal constructor(moduleGradlePaths: Collection<String>) : BuildAction<PostBuildProjectModels?>, Serializable {
-    private val myGradlePaths: ImmutableSet<String>
+    private val myGradlePaths: ImmutableSet<String> = ImmutableSet.copyOf(moduleGradlePaths)
 
     @TestOnly
     fun getMyGradlePaths(): Collection<String> {
@@ -18,14 +18,23 @@ class OutputBuildAction internal constructor(moduleGradlePaths: Collection<Strin
     }
 
     override fun execute(controller: BuildController): PostBuildProjectModels? {
-        return null
+        val postBuildProjectModels = PostBuildProjectModels()
+
+        if (!myGradlePaths.isEmpty()) {
+            val rootProject = controller.buildModel.rootProject
+            val root = controller.findModel(rootProject, GradleProject::class.java)
+            postBuildProjectModels.populate(root, myGradlePaths, controller)
+        }
+
+        return postBuildProjectModels
     }
 
-    class PostBuildProjectModels private constructor() : Serializable {
+    class PostBuildProjectModels() : Serializable {
         // Key: module's Gradle path.
         private val myModelsByModule: MutableMap<String, PostBuildModuleModels> = HashMap()
         fun populate(rootProject: GradleProject,
-                     gradleModulePaths: Collection<String>) {
+                     gradleModulePaths: Collection<String>,
+                     controller: BuildController) {
             for (gradleModulePath in gradleModulePaths) {
                 populateModule(rootProject, gradleModulePath)
             }
@@ -53,9 +62,5 @@ class OutputBuildAction internal constructor(moduleGradlePaths: Collection<Strin
         fun populate() {
 
         }
-    }
-
-    init {
-        myGradlePaths = ImmutableSet.copyOf(moduleGradlePaths)
     }
 }
