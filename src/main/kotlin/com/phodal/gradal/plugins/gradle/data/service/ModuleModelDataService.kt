@@ -46,13 +46,14 @@ abstract class ModuleModelDataService<T : ModuleModel?> : AbstractProjectDataSer
         }
     }
 
-    protected fun onModelsNotFound(modelsProvider: IdeModifiableModelsProvider) {
+    private fun onModelsNotFound(modelsProvider: IdeModifiableModelsProvider) {
         for (module in modelsProvider.modules) {
             onModelNotFound(module, modelsProvider)
         }
     }
 
-    protected fun onModelNotFound(module: Module, modelsProvider: IdeModifiableModelsProvider) {}
+    protected open fun onModelNotFound(module: Module, modelsProvider: IdeModifiableModelsProvider) {}
+
     private fun importData(toImport: Collection<DataNode<T>>,
                            project: Project,
                            modelsProvider: IdeModifiableModelsProvider) {

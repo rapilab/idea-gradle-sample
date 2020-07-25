@@ -4,7 +4,10 @@ import com.intellij.openapi.externalSystem.model.DataNode
 import com.intellij.openapi.externalSystem.model.Key
 import com.intellij.openapi.externalSystem.model.ProjectKeys
 import com.intellij.openapi.externalSystem.service.project.IdeModifiableModelsProvider
+import com.intellij.openapi.module.Module
 import com.intellij.openapi.project.Project
+import com.phodal.gradal.plugins.gradle.data.Facets.removeAllFacets
+import com.phodal.gradal.plugins.gradle.facet.GradleFacet
 
 class PGradleModuleModelDataService : ModuleModelDataService<GradleModuleModel>() {
     private lateinit var myModuleSetup: GradleModuleSetup
@@ -27,6 +30,10 @@ class PGradleModuleModelDataService : ModuleModelDataService<GradleModuleModel>(
 
     private fun populateExtraBuildParticipantFromBuildSrc(toImport: Collection<DataNode<GradleModuleModel>>, project: Project) {
 
+    }
+
+    override fun onModelNotFound(module: Module, modelsProvider: IdeModifiableModelsProvider) {
+        removeAllFacets(modelsProvider.getModifiableFacetModel(module), GradleFacet.getFacetTypeId())
     }
 
     override fun importData(toImport: Collection<DataNode<GradleModuleModel>>, project: Project, modelsProvider: IdeModifiableModelsProvider, modelsByModuleName: Map<String, GradleModuleModel>) {
