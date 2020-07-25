@@ -1,9 +1,6 @@
 package com.phodal.gradal.plugins.gradle
 
 import com.intellij.openapi.diagnostic.Logger
-import com.intellij.openapi.progress.EmptyProgressIndicator
-import com.intellij.openapi.progress.ProgressIndicator
-import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.project.Project
 import com.intellij.util.ArrayUtil
 import com.intellij.util.SystemProperties
@@ -12,6 +9,7 @@ import org.gradle.tooling.*
 import org.jetbrains.annotations.NotNull
 import java.io.File
 import java.util.*
+import java.util.concurrent.atomic.AtomicReference
 
 
 class GradleTasksExecutorImpl {
@@ -61,12 +59,14 @@ class GradleTasksExecutorImpl {
         val javaHome: String = SystemProperties.getJavaHome();
         operation.setJavaHome(File(javaHome))
 
+        val model = AtomicReference<Any?>(null)
+
         val logMessage = "Build command line options: clean, build"
         if (isBuildWithGradle) {
             (operation as BuildActionExecuter<*>).forTasks(*ArrayUtil.toStringArray(request.getGradleTasks()))
 
             connection.use {
-                operation.run();
+                model.set(operation.run())
             }
         }
         getLogger().info(logMessage)
