@@ -15,6 +15,8 @@
         <externalProjectDataService
                 implementation="com.phodal.gradal.plugins.gradle.data.service.PGradleModuleModelDataService"/>
 
+        <facetType implementation="com.phodal.gradal.plugins.gradle.facet.GradleFacetType"/>
+
         <projectImportProvider implementation="com.phodal.gradal.plugins.gradle.importing.AndroidGradleProjectImportProvider"/>
         <projectImportBuilder implementation="com.phodal.gradal.plugins.gradle.importing.AndroidGradleProjectImportProvider$AndroidGradleImportBuilder"/>
     </extensions>

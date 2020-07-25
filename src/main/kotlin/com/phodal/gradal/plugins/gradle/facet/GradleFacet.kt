@@ -5,14 +5,15 @@ import com.intellij.facet.Facet
 import com.intellij.facet.FacetManager
 import com.intellij.facet.FacetTypeId
 import com.intellij.facet.FacetTypeRegistry
+import com.intellij.facet.impl.FacetUtil.saveFacetConfiguration
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.externalSystem.service.project.IdeModifiableModelsProvider
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.roots.ModuleRootEvent
 import com.intellij.openapi.roots.ModuleRootListener
 import com.intellij.openapi.util.WriteExternalException
-import com.intellij.facet.impl.FacetUtil.saveFacetConfiguration
 import com.phodal.gradal.plugins.gradle.data.service.GradleModuleModel
 
 class GradleFacet(module: Module,
@@ -62,6 +63,10 @@ class GradleFacet(module: Module,
 
         fun getInstance(module: Module): GradleFacet? {
             return FacetManager.getInstance(module).getFacetByType(getFacetTypeId())
+        }
+
+        fun getInstance(module: Module, modelsProvider: IdeModifiableModelsProvider): GradleFacet? {
+            return modelsProvider.getModifiableFacetModel(module).getFacetByType(TYPE_ID)
         }
 
         fun getFacetTypeId(): FacetTypeId<GradleFacet> {
