@@ -5,6 +5,7 @@ import com.intellij.facet.FacetManager
 import com.intellij.facet.FacetTypeId
 import com.intellij.facet.FacetTypeRegistry
 import com.intellij.openapi.module.Module
+import org.jetbrains.annotations.NotNull
 
 class GradleFacet(module: Module,
                   name: String,
@@ -17,7 +18,7 @@ class GradleFacet(module: Module,
     companion object {
         const val facetId = "android-gradle"
         const val facetName = "Android-Gradle"
-        val TYPE_ID = FacetTypeId<GradleFacet>("android-gradle")
+        val TYPE_ID = FacetTypeId<GradleFacet>(facetId)
 
         fun getInstance(module: Module): GradleFacet? {
             return FacetManager.getInstance(module).getFacetByType(getFacetTypeId())

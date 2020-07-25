@@ -11,6 +11,9 @@
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="com.phodal.gradal.plugins.services.MyApplicationService"/>
         <projectService serviceImplementation="com.phodal.gradal.plugins.services.MyProjectService"/>
+
+        <externalProjectDataService
+                implementation="com.phodal.gradal.plugins.gradle.data.service.PGradleModuleModelDataService"/>
     </extensions>
 
     <projectListeners>
