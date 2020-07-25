@@ -66,7 +66,8 @@ class GradleTasksExecutorImpl {
             (operation as BuildActionExecuter<*>).forTasks(*ArrayUtil.toStringArray(request.getGradleTasks()))
 
             connection.use {
-                model.set(operation.run())
+                operation.run()
+//                model.set(operation.run())
             }
         }
         getLogger().info(logMessage)

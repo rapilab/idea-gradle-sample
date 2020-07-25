@@ -40,6 +40,7 @@ repositories {
 }
 dependencies {
     implementation("org.gradle:gradle-tooling-api:5.2.1")
+    implementation(files("libs/kapt3-idea.jar"))
     runtime("org.slf4j:slf4j-simple:1.7.10")
 
     implementation(kotlin("stdlib-jdk8"))
@@ -58,7 +59,7 @@ intellij {
 //  Plugin Dependencies:
 //  https://www.jetbrains.org/intellij/sdk/docs/basics/plugin_structure/plugin_dependencies.html
 //
-  setPlugins("java")
+    setPlugins("java")
 }
 
 // Configure detekt plugin.
