@@ -6,7 +6,11 @@ import com.phodal.gradal.plugins.gradle.facet.GradleFacet
 class OutputBuildActionUtil {
     companion object {
         fun create(modules: Array<Module>): OutputBuildAction? {
-            return OutputBuildAction(getModuleGradlePaths(modules))
+            val moduleGradlePaths = getModuleGradlePaths(modules)
+
+            val path = arrayOf("/Users/fdhuang/IntelliJIDEAProjects/MyApplication", "/Users/fdhuang/IntelliJIDEAProjects/MyApplication/app/app.iml")
+            path.toSet()
+            return OutputBuildAction(path.toSet())
         }
 
         private fun getModuleGradlePaths(modules: Array<Module>): Set<String> {

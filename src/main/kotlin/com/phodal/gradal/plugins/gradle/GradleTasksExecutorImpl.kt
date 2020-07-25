@@ -19,7 +19,7 @@ class GradleTasksExecutorImpl {
     }
 
     fun executeTask(project: Project, projectPath: String, buildAction: BuildAction<*>?) {
-        val gradleTasks = arrayOf("clean", "build").toList()
+        val gradleTasks = arrayOf("build").toList()
         val myProjectPath = File(projectPath)
 
         val request = GradleBuildInvoker.Request(project, myProjectPath, gradleTasks)
