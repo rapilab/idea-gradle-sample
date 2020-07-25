@@ -1,16 +1,13 @@
 package com.phodal.gradal.plugins.gradle.data.service
 
-import com.google.common.annotations.VisibleForTesting
 import com.intellij.openapi.externalSystem.model.DataNode
 import com.intellij.openapi.externalSystem.model.Key
 import com.intellij.openapi.externalSystem.model.ProjectKeys
-import com.intellij.openapi.externalSystem.model.project.ProjectData
 import com.intellij.openapi.externalSystem.service.project.IdeModifiableModelsProvider
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.util.Computable
 
 class PGradleModuleModelDataService : ModuleModelDataService<GradleModuleModel>() {
-    private var myModuleSetup: GradleModuleSetup
+    private lateinit var myModuleSetup: GradleModuleSetup
 
     private val PROCESSING_AFTER_BUILTIN_SERVICES = ProjectKeys.LIBRARY_DEPENDENCY.processingWeight + 1
     val GRADLE_MODULE_MODEL = Key.create(GradleModuleModel::class.java, PROCESSING_AFTER_BUILTIN_SERVICES)
@@ -19,13 +16,13 @@ class PGradleModuleModelDataService : ModuleModelDataService<GradleModuleModel>(
         return GRADLE_MODULE_MODEL
     }
 
+    // Instantiated by IDEA
     init {
-        myModuleSetup = GradleModuleSetup()
+        this(GradleModuleSetup())
     }
 
-    @VisibleForTesting
-    fun GradleModuleModelDataService(moduleSetup: GradleModuleSetup) {
-        myModuleSetup = moduleSetup
+    private operator fun invoke(gradleModuleSetup: GradleModuleSetup) {
+        myModuleSetup = gradleModuleSetup
     }
 
     private fun populateExtraBuildParticipantFromBuildSrc(toImport: Collection<DataNode<GradleModuleModel>>, project: Project) {
