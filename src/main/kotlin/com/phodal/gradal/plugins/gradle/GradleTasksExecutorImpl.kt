@@ -19,24 +19,25 @@ class GradleTasksExecutorImpl {
         return Logger.getInstance(GradleTasksExecutorImpl::class.java)
     }
 
-    fun executeTask(project: Project, projectPath: String) {
+    fun executeTask(project: Project, projectPath: String, buildAction: BuildAction<*>?) {
         val gradleTasks = arrayOf("clean", "build").toList()
         val myProjectPath = File(projectPath)
 
         val request = GradleBuildInvoker.Request(project, myProjectPath, gradleTasks)
 
-        executeTaskRequest(request)
+        executeTaskRequest(request, buildAction)
     }
 
-    private fun executeTaskRequest(request: GradleBuildInvoker.Request) {
+    private fun executeTaskRequest(request: GradleBuildInvoker.Request, buildAction: BuildAction<*>?) {
         val jvmArguments: List<String> = ArrayList()
-        val commandLineArguments: List<String> = ArrayList()
+//        val commandLineArguments: List<String> = ArrayList()
 
 //        val buildTaskListener: ExternalSystemTaskNotificationListener = createBuildTaskListener(request, "Build")
 
         request
                 .setJvmArguments(jvmArguments)
-                .setCommandLineArguments(commandLineArguments)
+                .setCommandLineArguments()
+                .setBuildAction(buildAction)
 
         executeTask(request)
     }
@@ -47,7 +48,15 @@ class GradleTasksExecutorImpl {
         connector.forProjectDirectory(request.myBuildFilePath);
         val connection: ProjectConnection = connector.connect()
 
-        val operation: LongRunningOperation = connection.newBuild()
+        val buildAction: BuildAction<*>? = request.getBuildAction()
+        val operation: LongRunningOperation;
+
+        if (buildAction != null) {
+            operation =  connection.action(buildAction)
+        } else {
+            operation = connection.newBuild()
+        }
+
         val javaHome: String = SystemProperties.getJavaHome();
         operation.setJavaHome(File(javaHome))
 
@@ -61,5 +70,4 @@ class GradleTasksExecutorImpl {
         }
         getLogger().info(logMessage)
     }
-
 }

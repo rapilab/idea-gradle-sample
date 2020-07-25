@@ -4,6 +4,7 @@ import com.intellij.openapi.externalSystem.model.ProjectSystemId
 import com.intellij.openapi.externalSystem.model.task.ExternalSystemTaskId
 import com.intellij.openapi.externalSystem.model.task.ExternalSystemTaskType
 import com.intellij.openapi.project.Project
+import org.gradle.tooling.BuildAction
 import org.jetbrains.annotations.NonNls
 import java.io.File
 import java.util.*
@@ -17,6 +18,7 @@ object GradleBuildInvoker {
                                             private val path: File,
                                             gradleTasks: List<String>,
                                             taskId: ExternalSystemTaskId = ExternalSystemTaskId.create(GRADLE_SYSTEM_ID, ExternalSystemTaskType.EXECUTE_TASK, myProject)) {
+        private var myBuildAction: BuildAction<*>? = null
         private val myGradleTasks: List<String>
         private val myJvmArguments: MutableList<String>
         private val myCommandLineArguments: List<String>
@@ -43,8 +45,17 @@ object GradleBuildInvoker {
             return this
         }
 
-        fun setCommandLineArguments(commandLineArguments: List<String>) {
+        fun setCommandLineArguments(): Request {
+            return this
+        }
 
+        fun setBuildAction(buildAction: BuildAction<*>?): Request {
+            this.myBuildAction = buildAction
+            return this
+        }
+
+        fun getBuildAction(): BuildAction<*>? {
+            return this.myBuildAction
         }
     }
 }

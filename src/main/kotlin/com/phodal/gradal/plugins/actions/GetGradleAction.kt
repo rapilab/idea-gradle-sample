@@ -1,14 +1,11 @@
 package com.phodal.gradal.plugins.actions
 
-import com.intellij.execution.filters.TextConsoleBuilderFactory
-import com.intellij.execution.ui.ConsoleView
-import com.intellij.execution.ui.ConsoleViewContentType
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.wm.ToolWindow
-import com.intellij.openapi.wm.ToolWindowManager
-import com.intellij.ui.content.Content
+import com.intellij.openapi.module.ModuleManager
 import com.phodal.gradal.plugins.gradle.GradleTasksExecutorImpl
+import com.phodal.gradal.plugins.gradle.run.OutputBuildActionUtil
+import org.gradle.tooling.LongRunningOperation
 
 
 class GetGradleAction : AnAction() {
@@ -22,6 +19,11 @@ class GetGradleAction : AnAction() {
 //        toolWindow.contentManager.addContent(content)
 //        consoleView.print("Hello from MyPlugin!", ConsoleViewContentType.NORMAL_OUTPUT)
 
-        GradleTasksExecutorImpl().executeTask(project, projectPath)
+
+        val moduleManager = ModuleManager.getInstance(project)
+        val modules = moduleManager.modules
+        val buildAction = OutputBuildActionUtil.create(modules);
+
+        GradleTasksExecutorImpl().executeTask(project, projectPath, buildAction)
     }
 }
