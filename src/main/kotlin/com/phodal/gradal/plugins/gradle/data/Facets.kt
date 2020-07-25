@@ -5,6 +5,7 @@ import com.intellij.facet.FacetTypeId
 import com.intellij.facet.ModifiableFacetModel
 import com.intellij.openapi.externalSystem.service.project.IdeModifiableModelsProvider
 import com.intellij.openapi.module.Module
+import org.jetbrains.annotations.Nullable
 
 object Facets {
     @SafeVarargs
@@ -19,7 +20,7 @@ object Facets {
 
     fun <T : Facet<*>?> findFacet(module: Module,
                                   modelsProvider: IdeModifiableModelsProvider,
-                                  typeId: FacetTypeId<T>): T? {
+                                  typeId: FacetTypeId<T>): @Nullable T? {
         val facetModel = modelsProvider.getModifiableFacetModel(module)
         return facetModel.getFacetByType(typeId)
     }
