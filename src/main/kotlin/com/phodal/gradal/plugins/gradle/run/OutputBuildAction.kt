@@ -25,23 +25,21 @@ class OutputBuildAction internal constructor(moduleGradlePaths: Collection<Strin
         // Key: module's Gradle path.
         private val myModelsByModule: MutableMap<String, PostBuildModuleModels> = HashMap()
         fun populate(rootProject: GradleProject,
-                     gradleModulePaths: Collection<String>,
-                     controller: BuildController) {
+                     gradleModulePaths: Collection<String>) {
             for (gradleModulePath in gradleModulePaths) {
-                populateModule(rootProject, gradleModulePath, controller)
+                populateModule(rootProject, gradleModulePath)
             }
         }
 
         private fun populateModule(rootProject: GradleProject,
-                                   moduleProjectPath: String,
-                                   controller: BuildController) {
+                                   moduleProjectPath: String) {
             if (myModelsByModule.containsKey(moduleProjectPath)) {
                 return
             }
             val moduleProject = rootProject.findByPath(moduleProjectPath)
             if (moduleProject != null) {
                 val models = PostBuildModuleModels(moduleProject)
-                models.populate(controller)
+                models.populate()
                 myModelsByModule[moduleProject.path] = models
             }
         }
@@ -52,7 +50,7 @@ class OutputBuildAction internal constructor(moduleGradlePaths: Collection<Strin
     }
 
     class PostBuildModuleModels(private val myGradleProject: GradleProject) : Serializable {
-        fun populate(controller: BuildController) {
+        fun populate() {
 
         }
     }
