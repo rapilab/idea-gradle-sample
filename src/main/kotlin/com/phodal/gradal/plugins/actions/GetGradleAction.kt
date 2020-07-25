@@ -15,12 +15,12 @@ class GetGradleAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project!!
         val projectPath = project.basePath!!
-
-        val toolWindow: ToolWindow = ToolWindowManager.getInstance(e.project!!).getToolWindow("MyPlugin")!!
-        val consoleView: ConsoleView = TextConsoleBuilderFactory.getInstance().createBuilder(e.project!!).console
-        val content: Content = toolWindow.contentManager.getFactory().createContent(consoleView.getComponent(), "MyPlugin Output", false)
-        toolWindow.contentManager.addContent(content)
-        consoleView.print("Hello from MyPlugin!", ConsoleViewContentType.NORMAL_OUTPUT)
+//
+//        val toolWindow: ToolWindow = ToolWindowManager.getInstance(e.project!!).getToolWindow("MyPlugin")!!
+//        val consoleView: ConsoleView = TextConsoleBuilderFactory.getInstance().createBuilder(e.project!!).console
+//        val content: Content = toolWindow.contentManager.getFactory().createContent(consoleView.getComponent(), "MyPlugin Output", false)
+//        toolWindow.contentManager.addContent(content)
+//        consoleView.print("Hello from MyPlugin!", ConsoleViewContentType.NORMAL_OUTPUT)
 
         GradleTasksExecutorImpl().executeTask(project, projectPath)
     }

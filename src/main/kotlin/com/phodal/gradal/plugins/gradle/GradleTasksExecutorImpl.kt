@@ -1,14 +1,11 @@
 package com.phodal.gradal.plugins.gradle
 
 import com.intellij.openapi.diagnostic.Logger
-import com.intellij.openapi.externalSystem.model.task.ExternalSystemTaskNotificationListener
 import com.intellij.openapi.project.Project
 import com.intellij.util.ArrayUtil
 import com.intellij.util.SystemProperties
 import com.phodal.plugins.gradle.GradleProjectInfo
-import org.gradle.tooling.BuildLauncher
-import org.gradle.tooling.GradleConnector
-import org.gradle.tooling.ProjectConnection
+import org.gradle.tooling.*
 import org.jetbrains.annotations.NotNull
 import java.io.File
 import java.util.*
@@ -50,13 +47,13 @@ class GradleTasksExecutorImpl {
         connector.forProjectDirectory(request.myBuildFilePath);
         val connection: ProjectConnection = connector.connect()
 
-        val operation: BuildLauncher = connection.newBuild()
+        val operation: LongRunningOperation = connection.newBuild()
         val javaHome: String = SystemProperties.getJavaHome();
         operation.setJavaHome(File(javaHome))
 
         val logMessage = "Build command line options: clean, build"
         if (isBuildWithGradle) {
-            operation.forTasks(*ArrayUtil.toStringArray(request.getGradleTasks()))
+            (operation as BuildLauncher).forTasks(*ArrayUtil.toStringArray(request.getGradleTasks()))
 
             connection.use {
                 operation.run();
