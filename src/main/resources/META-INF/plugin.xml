@@ -18,8 +18,8 @@
     </projectListeners>
     <actions>
         <action id="Gradle.Get"
-                class="com.phodal.gradal.plugins.actions.GetGradleAction"
-                text="Run Get Gradle" description="Run Get Gradle">
+                class="com.phodal.gradal.plugins.actions.BuildApkAction"
+                text="Run Get Gradle" description="Build App">
             <add-to-group group-id="ToolsMenu" anchor="first"/>
         </action>
     </actions>

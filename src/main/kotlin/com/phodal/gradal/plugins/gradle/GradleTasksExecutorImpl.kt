@@ -62,7 +62,7 @@ class GradleTasksExecutorImpl {
 
         val logMessage = "Build command line options: clean, build"
         if (isBuildWithGradle) {
-            (operation as BuildLauncher).forTasks(*ArrayUtil.toStringArray(request.getGradleTasks()))
+            (operation as BuildActionExecuter<*>).forTasks(*ArrayUtil.toStringArray(request.getGradleTasks()))
 
             connection.use {
                 operation.run();

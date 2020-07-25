@@ -7,7 +7,7 @@ import com.phodal.gradal.plugins.gradle.GradleTasksExecutorImpl
 import com.phodal.gradal.plugins.gradle.run.OutputBuildActionUtil
 
 
-class GetGradleAction : AnAction() {
+class BuildApkAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project!!
         val projectPath = project.basePath!!

@@ -5,7 +5,7 @@ import com.intellij.facet.FacetType
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.module.ModuleType
 
-class GradleFacetType : FacetType<GradleFacet, GradleFacetConfiguration>(GradleFacet.facetTypeId, GradleFacet.facetId, GradleFacet.facetName) {
+class GradleFacetType : FacetType<GradleFacet, GradleFacetConfiguration>(GradleFacet.TYPE_ID, GradleFacet.facetId, GradleFacet.facetName) {
     override fun createDefaultConfiguration(): GradleFacetConfiguration {
         return GradleFacetConfiguration()
     }
