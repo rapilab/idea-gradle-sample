@@ -14,6 +14,9 @@
 
         <externalProjectDataService
                 implementation="com.phodal.gradal.plugins.gradle.data.service.PGradleModuleModelDataService"/>
+
+        <projectImportProvider implementation="com.phodal.gradal.plugins.gradle.importing.AndroidGradleProjectImportProvider"/>
+        <projectImportBuilder implementation="com.phodal.gradal.plugins.gradle.importing.AndroidGradleProjectImportProvider$AndroidGradleImportBuilder"/>
     </extensions>
 
     <projectListeners>

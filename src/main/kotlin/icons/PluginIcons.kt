@@ -9,6 +9,7 @@ object PluginIcons {
     }
 
     object Console {
-        val Python = load("/icons/python.svg")
+        @kotlin.jvm.JvmField
+        var Python: Icon = load("/icons/python.svg")
     }
 }
