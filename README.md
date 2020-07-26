@@ -1,6 +1,12 @@
 # Gardal: Idea Gradle Sample for testing
 
 
+## Process
+
+BuildApkAction -> OutputBuildActionUtil -> OutputBuildAction -> BulidPath
+
+assemble ->
+
 ## notes
 
 Gradal Build Logs:
