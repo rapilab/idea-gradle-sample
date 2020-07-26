@@ -9,6 +9,8 @@ import com.intellij.build.events.impl.FinishBuildEventImpl
 import com.intellij.build.events.impl.SkippedResultImpl
 import com.intellij.build.events.impl.StartBuildEventImpl
 import com.intellij.build.events.impl.SuccessResultImpl
+import com.intellij.openapi.actionSystem.AnAction
+import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.externalSystem.model.task.*
@@ -18,6 +20,7 @@ import com.intellij.openapi.externalSystem.service.execution.ExternalSystemEvent
 import com.intellij.openapi.externalSystem.util.ExternalSystemUtil
 import com.intellij.openapi.project.Project
 import com.phodal.gradal.plugins.gradle.GradleUtil.GRADLE_SYSTEM_ID
+import icons.PluginIcons
 import org.gradle.tooling.BuildAction
 import java.io.File
 import java.util.*
@@ -26,6 +29,8 @@ import java.util.concurrent.TimeUnit
 
 class GradleBuildInvoker(project: Project) {
     private var myProject: Project = project
+    private val myBuildStopper: BuildStopper = BuildStopper()
+
     private val ASSEMBLE = "assemble"
 
     companion object {
@@ -72,24 +77,24 @@ class GradleBuildInvoker(project: Project) {
                 private var myBuildEventDispatcher = eventDispatcher
                 private var myBuildFailed = false
                 override fun onStart(id: ExternalSystemTaskId, workingDir: String) {
-//                    val restartAction: AnAction = object : AnAction() {
-//                        override fun update(e: AnActionEvent) {
-//                            e.presentation.isEnabled = !myBuildStopper.contains(id)
-//                        }
-//
-//                        override fun actionPerformed(e: AnActionEvent) {
-//                            myBuildFailed = false
-//                            // Recreate the reader since the one created with the listener can be already closed (see b/73102585)
-//                            myBuildEventDispatcher.close()
-//                            myBuildEventDispatcher = ExternalSystemEventDispatcher(request.myTaskId, buildViewManager)
-//                            executeTasks(request)
-//                        }
-//                    }
-//                    myBuildFailed = false
-//                    val presentation = restartAction.templatePresentation
-//                    presentation.setText("Restart")
-//                    presentation.description = "Restart"
-//                    presentation.setIcon(AllIcons.Actions.Compile)
+                    val restartAction: AnAction = object : AnAction() {
+                        override fun update(e: AnActionEvent) {
+                            e.presentation.isEnabled = !myBuildStopper.contains(id)
+                        }
+
+                        override fun actionPerformed(e: AnActionEvent) {
+                            myBuildFailed = false
+                            // Recreate the reader since the one created with the listener can be already closed (see b/73102585)
+                            myBuildEventDispatcher.close()
+                            myBuildEventDispatcher = ExternalSystemEventDispatcher(request.myTaskId, buildViewManager)
+                            executeTasks(request)
+                        }
+                    }
+                    myBuildFailed = false
+                    val presentation = restartAction.templatePresentation
+                    presentation.setText("Restart")
+                    presentation.description = "Restart"
+                    presentation.setIcon(PluginIcons.Console.Python)
                     val eventTime = System.currentTimeMillis()
                     val event = StartBuildEventImpl(DefaultBuildDescriptor(id, executionName, workingDir, eventTime),
                             "running...")
@@ -118,9 +123,9 @@ class GradleBuildInvoker(project: Project) {
                 override fun onEnd(id: ExternalSystemTaskId) {
                     val eventDispatcherFinished = CountDownLatch(1)
                     myBuildEventDispatcher.invokeOnCompletion { t: Throwable? ->
-//                        if (myBuildFailed) {
+                        if (myBuildFailed) {
 //                            ServiceManager.getService(myProject, BuildOutputParserManager::class.java).sendBuildFailureMetrics()
-//                        }
+                        }
                         eventDispatcherFinished.countDown()
                     }
                     myBuildEventDispatcher.close()
