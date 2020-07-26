@@ -48,7 +48,6 @@ class GradleProjectImporter {
             }
             Messages.showErrorDialog(e.message, "Project Import")
             logger.error(e)
-            newProject = null
         }
     }
 

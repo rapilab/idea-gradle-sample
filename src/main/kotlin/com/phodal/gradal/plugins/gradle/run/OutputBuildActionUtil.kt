@@ -7,21 +7,14 @@ class OutputBuildActionUtil {
     companion object {
         fun create(modules: Array<Module>): OutputBuildAction? {
             val moduleGradlePaths = getModuleGradlePaths(modules)
-
-            val path = arrayOf("/Users/fdhuang/IntelliJIDEAProjects/MyApplication", "/Users/fdhuang/IntelliJIDEAProjects/MyApplication/app/app.iml")
-            path.toSet()
-            return OutputBuildAction(path.toSet())
+            return OutputBuildAction(moduleGradlePaths)
         }
 
         private fun getModuleGradlePaths(modules: Array<Module>): Set<String> {
             val gradlePaths = mutableSetOf<String>()
             modules.mapNotNullTo(gradlePaths) {
                 val facet = GradleFacet.getInstance(it)
-                if (facet != null) {
-                    facet.configuration?.GRADLE_PROJECT_PATH
-                } else {
-                    it.moduleFilePath
-                }
+                facet?.configuration?.GRADLE_PROJECT_PATH
             }
             return gradlePaths
         }

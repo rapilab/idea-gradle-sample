@@ -2,6 +2,7 @@ package com.phodal.gradal.plugins.gradle
 
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.progress.ProgressIndicator
+import com.intellij.openapi.ui.MessageType
 import com.intellij.util.ArrayUtil
 import com.intellij.util.SystemProperties
 import com.phodal.plugins.gradle.GradleProjectInfo
@@ -52,7 +53,9 @@ class GradleTasksExecutorImpl(request: GradleBuildInvoker.Request) : GradleTasks
         val javaHome: String = SystemProperties.getJavaHome();
         operation.setJavaHome(File(javaHome))
 
-        val logMessage = "Build command line options: clean, build"
+        val executingTasksText = "Executing tasks: " + myRequest.getGradleTasks() + " in project " + myRequest.myBuildFilePath.path
+        addToEventLog(executingTasksText, MessageType.INFO)
+
         if (isBuildWithGradle) {
             (operation as BuildActionExecuter<*>).forTasks(*ArrayUtil.toStringArray(myRequest.getGradleTasks()))
 
@@ -60,9 +63,13 @@ class GradleTasksExecutorImpl(request: GradleBuildInvoker.Request) : GradleTasks
                 operation.run()
             }
         }
+        val logMessage = "Build command line options:" + myRequest.getGradleTasks()
         getLogger().info(logMessage)
     }
 
+    private fun addToEventLog(message: String, type: MessageType) {
+        LOGGING_NOTIFICATION.createNotification(message, type).notify(myProject)
+    }
 
     override fun queueAndWaitForCompletion() {
         var counterBefore: Int
