@@ -1,18 +1,44 @@
 package com.phodal.gradal.plugins.gradle
 
-import com.intellij.openapi.externalSystem.model.ProjectSystemId
+import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.externalSystem.model.task.ExternalSystemTaskId
 import com.intellij.openapi.externalSystem.model.task.ExternalSystemTaskType
 import com.intellij.openapi.project.Project
+import com.phodal.gradal.plugins.gradle.data.service.GradleUtil.GRADLE_SYSTEM_ID
 import org.gradle.tooling.BuildAction
-import org.jetbrains.annotations.NonNls
 import java.io.File
 import java.util.*
 
-object GradleBuildInvoker {
-    @NonNls
-    val SYSTEM_ID = ProjectSystemId("GRADLE")
-    val GRADLE_SYSTEM_ID = SYSTEM_ID
+class GradleBuildInvoker(project: Project) {
+    private var myProject: Project = project
+    private val ASSEMBLE = "assemble"
+
+    companion object {
+        fun getInstance(project: Project): GradleBuildInvoker {
+            return ServiceManager.getService(project, GradleBuildInvoker::class.java)
+        }
+    }
+
+    fun assemble(projectPath: String, buildAction: BuildAction<*>?) {
+        val gradleTasks = arrayOf(ASSEMBLE).toList()
+        val myProjectPath = File(projectPath)
+
+        val request = Request(myProject, myProjectPath, gradleTasks)
+
+        executeTaskRequest(request, buildAction)
+    }
+
+
+    private fun executeTaskRequest(request: Request, buildAction: BuildAction<*>?) {
+        val jvmArguments: List<String> = ArrayList()
+        request
+                .setJvmArguments(jvmArguments)
+                .setCommandLineArguments()
+                .setBuildAction(buildAction)
+
+        val executor: GradleTasksExecutor = GradleTasksExecutorImpl(request)
+        executor.queue()
+    }
 
     class Request @JvmOverloads constructor(val myProject: Project,
                                             private val path: File,

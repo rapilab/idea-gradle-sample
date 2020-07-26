@@ -3,6 +3,7 @@ package com.phodal.gradal.plugins.actions
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.module.ModuleManager
+import com.phodal.gradal.plugins.gradle.GradleBuildInvoker
 import com.phodal.gradal.plugins.gradle.GradleTasksExecutorImpl
 import com.phodal.gradal.plugins.gradle.run.OutputBuildActionUtil
 
@@ -22,6 +23,7 @@ class BuildApkAction : AnAction() {
         val modules = moduleManager.modules
         val buildAction = OutputBuildActionUtil.create(modules);
 
-        GradleTasksExecutorImpl().executeTask(project, projectPath, buildAction)
+        val invoker = GradleBuildInvoker.getInstance(project)
+        invoker.assemble(projectPath, buildAction);
     }
 }

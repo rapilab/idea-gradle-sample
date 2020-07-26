@@ -1,55 +1,35 @@
 package com.phodal.gradal.plugins.gradle
 
 import com.intellij.openapi.diagnostic.Logger
-import com.intellij.openapi.project.Project
+import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.util.ArrayUtil
 import com.intellij.util.SystemProperties
 import com.phodal.plugins.gradle.GradleProjectInfo
+import net.jcip.annotations.GuardedBy
 import org.gradle.tooling.*
 import org.jetbrains.annotations.NotNull
 import java.io.File
-import java.util.*
-import java.util.concurrent.atomic.AtomicReference
 
 
-class GradleTasksExecutorImpl {
-    private val ASSEMBLE = "assemble"
+class GradleTasksExecutorImpl(request: GradleBuildInvoker.Request) : GradleTasksExecutor(request.myProject) {
+    private var myRequest: GradleBuildInvoker.Request = request
+
+    @GuardedBy("myCompletionLock")
+    private var myCompletionCounter = 0
+    private val myCompletionLock = Object()
 
     @NotNull
     private fun getLogger(): Logger {
         return Logger.getInstance(GradleTasksExecutorImpl::class.java)
     }
 
-    fun executeTask(project: Project, projectPath: String, buildAction: BuildAction<*>?) {
-        val gradleTasks = arrayOf(ASSEMBLE).toList()
-        val myProjectPath = File(projectPath)
-
-        val request = GradleBuildInvoker.Request(project, myProjectPath, gradleTasks)
-
-        executeTaskRequest(request, buildAction)
-    }
-
-    private fun executeTaskRequest(request: GradleBuildInvoker.Request, buildAction: BuildAction<*>?) {
-        val jvmArguments: List<String> = ArrayList()
-//        val commandLineArguments: List<String> = ArrayList()
-
-//        val buildTaskListener: ExternalSystemTaskNotificationListener = createBuildTaskListener(request, "Build")
-
-        request
-                .setJvmArguments(jvmArguments)
-                .setCommandLineArguments()
-                .setBuildAction(buildAction)
-
-        executeTask(request)
-    }
-
-    private fun executeTask(request: GradleBuildInvoker.Request) {
-        val isBuildWithGradle = GradleProjectInfo.isBuildWithGradle(request.myProject)
+    override fun run(indicator: ProgressIndicator) {
+        val isBuildWithGradle = GradleProjectInfo.isBuildWithGradle(myRequest.myProject)
         val connector = GradleConnector.newConnector();
-        connector.forProjectDirectory(request.myBuildFilePath);
+        connector.forProjectDirectory(myRequest.myBuildFilePath);
         val connection: ProjectConnection = connector.connect()
 
-        val buildAction: BuildAction<*>? = request.getBuildAction()
+        val buildAction: BuildAction<*>? = myRequest.getBuildAction()
         val operation: LongRunningOperation;
 
         if (buildAction != null) {
@@ -61,17 +41,53 @@ class GradleTasksExecutorImpl {
         val javaHome: String = SystemProperties.getJavaHome();
         operation.setJavaHome(File(javaHome))
 
-        val model = AtomicReference<Any?>(null)
-
         val logMessage = "Build command line options: clean, build"
         if (isBuildWithGradle) {
-            (operation as BuildActionExecuter<*>).forTasks(*ArrayUtil.toStringArray(request.getGradleTasks()))
+            (operation as BuildActionExecuter<*>).forTasks(*ArrayUtil.toStringArray(myRequest.getGradleTasks()))
 
             connection.use {
                 operation.run()
-//                model.set(operation.run())
             }
         }
         getLogger().info(logMessage)
     }
+
+
+    override fun queueAndWaitForCompletion() {
+        var counterBefore: Int
+        synchronized(myCompletionLock) { counterBefore = myCompletionCounter }
+        queue()
+        synchronized(myCompletionLock) {
+            while (true) {
+                if (myCompletionCounter > counterBefore) {
+                    break
+                }
+                try {
+                    myCompletionLock.wait()
+                } catch (e: InterruptedException) {
+                    // Just stop waiting.
+                    break
+                }
+            }
+        }
+    }
+
+
+    override fun onSuccess() {
+        super.onSuccess()
+        onCompletion()
+    }
+
+    override fun onCancel() {
+        super.onCancel()
+        onCompletion()
+    }
+
+    private fun onCompletion() {
+        synchronized(myCompletionLock) {
+            myCompletionCounter++
+            myCompletionLock.notifyAll()
+        }
+    }
+
 }
