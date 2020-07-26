@@ -3,7 +3,7 @@ package com.phodal.gradal.plugins.actions
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.module.ModuleManager
-import com.phodal.gradal.plugins.gradle.GradleBuildInvoker
+import com.phodal.gradal.plugins.gradle.invoker.GradleBuildInvoker
 import com.phodal.gradal.plugins.gradle.run.OutputBuildActionUtil
 
 

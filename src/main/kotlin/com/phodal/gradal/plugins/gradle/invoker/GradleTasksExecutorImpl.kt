@@ -1,4 +1,4 @@
-package com.phodal.gradal.plugins.gradle
+package com.phodal.gradal.plugins.gradle.invoker
 
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.externalSystem.model.task.ExternalSystemTaskId
@@ -10,6 +10,7 @@ import com.intellij.openapi.ui.MessageType
 import com.intellij.util.ArrayUtil
 import com.intellij.util.Function
 import com.intellij.util.SystemProperties
+import com.phodal.gradal.plugins.gradle.project.GradleProjectInfo
 import net.jcip.annotations.GuardedBy
 import org.gradle.tooling.*
 import org.jetbrains.annotations.NotNull

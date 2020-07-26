@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.phodal.gradal.plugins.gradle
+package com.phodal.gradal.plugins.gradle.invoker
 
 import com.intellij.notification.NotificationGroup
 import com.intellij.openapi.progress.Task.Backgroundable

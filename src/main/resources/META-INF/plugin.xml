@@ -7,7 +7,7 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <projectService serviceImplementation="com.phodal.gradal.plugins.gradle.GradleBuildInvoker"/>
+        <projectService serviceImplementation="com.phodal.gradal.plugins.gradle.invoker.GradleBuildInvoker"/>
 
         <facetType implementation="com.phodal.gradal.plugins.gradle.facet.GradleFacetType"/>
     </extensions>

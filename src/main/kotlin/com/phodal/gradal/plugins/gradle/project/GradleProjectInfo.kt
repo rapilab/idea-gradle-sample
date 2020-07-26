@@ -1,4 +1,4 @@
-package com.phodal.gradal.plugins.gradle
+package com.phodal.gradal.plugins.gradle.project
 
 import com.intellij.openapi.application.ReadAction
 import com.intellij.openapi.components.ServiceManager

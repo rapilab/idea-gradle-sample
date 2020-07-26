@@ -1,4 +1,4 @@
-package com.phodal.gradal.plugins.gradle
+package com.phodal.gradal.plugins.gradle.invoker
 
 import com.intellij.build.BuildConsoleUtils
 import com.intellij.build.BuildEventDispatcher
