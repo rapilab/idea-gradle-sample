@@ -12,11 +12,6 @@ import java.util.*
 class OutputBuildAction internal constructor(moduleGradlePaths: Collection<String>) : BuildAction<PostBuildProjectModels?>, Serializable {
     private val myGradlePaths: ImmutableSet<String> = ImmutableSet.copyOf(moduleGradlePaths)
 
-    @TestOnly
-    fun getMyGradlePaths(): Collection<String> {
-        return myGradlePaths
-    }
-
     override fun execute(controller: BuildController): PostBuildProjectModels? {
         val postBuildProjectModels = PostBuildProjectModels()
 

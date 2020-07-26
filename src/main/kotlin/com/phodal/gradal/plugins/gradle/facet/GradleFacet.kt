@@ -46,10 +46,6 @@ class GradleFacet(module: Module,
         }
     }
 
-    fun getGradleModuleModel(): GradleModuleModel? {
-        return myGradleModuleModel
-    }
-
     fun setGradleModuleModel(gradleModuleModel: GradleModuleModel) {
         myGradleModuleModel = gradleModuleModel
         configuration.GRADLE_PROJECT_PATH = myGradleModuleModel.gradlePath

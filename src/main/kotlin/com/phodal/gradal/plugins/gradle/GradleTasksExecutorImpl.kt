@@ -10,8 +10,6 @@ import com.intellij.openapi.ui.MessageType
 import com.intellij.util.ArrayUtil
 import com.intellij.util.Function
 import com.intellij.util.SystemProperties
-import com.phodal.gradal.plugins.gradle.invoker.NoopExternalSystemTaskNotificationListener
-import com.phodal.plugins.gradle.GradleProjectInfo
 import net.jcip.annotations.GuardedBy
 import org.gradle.tooling.*
 import org.jetbrains.annotations.NotNull

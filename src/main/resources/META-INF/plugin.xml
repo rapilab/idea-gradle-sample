@@ -4,27 +4,15 @@
     <vendor>JetBrains</vendor>
     <description>dfskajflajlasjflasjdflkasjflsajflasjfslfjalfjslfjs</description>
 
-    <!-- Product and plugin compatibility requirements -->
-    <!-- https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.phodal.gradal.plugins.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.phodal.gradal.plugins.services.MyProjectService"/>
         <projectService serviceImplementation="com.phodal.gradal.plugins.gradle.GradleBuildInvoker"/>
-
         <externalProjectDataService
                 implementation="com.phodal.gradal.plugins.gradle.data.service.PGradleModuleModelDataService"/>
 
         <facetType implementation="com.phodal.gradal.plugins.gradle.facet.GradleFacetType"/>
-
-        <projectService serviceImplementation="com.phodal.gradal.plugins.gradle.variant.view.BuildVariantView"/>
     </extensions>
-
-    <projectListeners>
-        <listener class="com.phodal.gradal.plugins.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </projectListeners>
 
     <actions>
         <action id="Gradle.Get"
