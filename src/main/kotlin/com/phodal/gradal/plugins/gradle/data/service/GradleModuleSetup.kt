@@ -47,7 +47,7 @@ class GradleModuleSetup {
             facetModel.addFacet(facet)
         }
         facet.setGradleModuleModel(model)
-//        val gradleVersion: String = model.getGradlePluginseVersion()
+//        val gradleVersion: String = model.getGradlePluginsVersion()
 //        if (StringUtil.isNotEmpty(gradleVersion)) {
 //            GradleSyncState.getInstance(module.project).setLastSyncedGradleVersion(GradleVersion.parse(gradleVersion))
 //        }

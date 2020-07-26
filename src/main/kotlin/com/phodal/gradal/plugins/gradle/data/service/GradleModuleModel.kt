@@ -32,15 +32,27 @@ import java.util.*
 class GradleModuleModel
 /**
  * Method of constructing a GradleModuleModel without a GradleProject for use in tests ONLY.
- */ @VisibleForTesting @PropertyMapping("myModuleName", "myTaskNames", "myGradlePath", "myRootFolderPath", "myGradlePlugins", "myBuildFilePath", "myGradleVersion", "myAgpVersion", "myIsKaptEnabled") constructor(override val moduleName: String,
-                                                                                                                                                                                                                   val taskNames: List<String?>,
-                                                                                                                                                                                                                   val gradlePath: String,
-                                                                                                                                                                                                                   val rootFolderPath: File,
-                                                                                                                                                                                                                   val gradlePlugins: List<String>,
-                                                                                                                                                                                                                   val buildFilePath: File?,
-                                                                                                                                                                                                                   val gradleVersion: String?,
-                                                                                                                                                                                                                   val agpVersion: String?,
-                                                                                                                                                                                                                   val isKaptEnabled: Boolean) : ModuleModel {
+ */
+@VisibleForTesting
+@PropertyMapping(
+        "myModuleName",
+        "myTaskNames",
+        "myGradlePath",
+        "myRootFolderPath",
+        "myGradlePlugins",
+        "myBuildFilePath",
+        "myGradleVersion",
+        "myAgpVersion",
+        "myIsKaptEnabled")
+constructor(override val moduleName: String,
+            val taskNames: List<String?>,
+            val gradlePath: String,
+            val rootFolderPath: File,
+            val gradlePlugins: List<String>,
+            val buildFilePath: File?,
+            val gradleVersion: String?,
+            val agpVersion: String?,
+            val isKaptEnabled: Boolean) : ModuleModel {
     /**
      * @return the path of the Gradle project.
      */
