@@ -1,4 +1,4 @@
-package com.phodal.gradal.plugins.gradle.data.service
+package com.phodal.gradal.plugins.gradle
 
 import com.intellij.openapi.externalSystem.model.ProjectSystemId
 import org.jetbrains.annotations.NonNls

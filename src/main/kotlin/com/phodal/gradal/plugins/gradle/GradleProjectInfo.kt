@@ -10,11 +10,11 @@ import com.intellij.openapi.project.Project
 import java.util.*
 
 class GradleProjectInfo {
-    fun getInstance(project: Project): GradleProjectInfo {
-        return ServiceManager.getService(project, GradleProjectInfo::class.java)
-    }
-
     companion object {
+        fun getInstance(project: Project): GradleProjectInfo {
+            return ServiceManager.getService(project, GradleProjectInfo::class.java)
+        }
+
         fun isBuildWithGradle(myProject: Project): Boolean {
             return ReadAction.compute<Boolean, RuntimeException> {
                 if (myProject.isDisposed()) {

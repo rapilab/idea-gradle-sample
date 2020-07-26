@@ -5,7 +5,6 @@ import com.phodal.gradal.plugins.gradle.run.OutputBuildAction.PostBuildProjectMo
 import org.gradle.tooling.BuildAction
 import org.gradle.tooling.BuildController
 import org.gradle.tooling.model.GradleProject
-import org.jetbrains.annotations.TestOnly
 import java.io.Serializable
 import java.util.*
 

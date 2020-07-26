@@ -17,7 +17,7 @@ import com.intellij.openapi.externalSystem.model.task.event.ExternalSystemTaskEx
 import com.intellij.openapi.externalSystem.service.execution.ExternalSystemEventDispatcher
 import com.intellij.openapi.externalSystem.util.ExternalSystemUtil
 import com.intellij.openapi.project.Project
-import com.phodal.gradal.plugins.gradle.data.service.GradleUtil.GRADLE_SYSTEM_ID
+import com.phodal.gradal.plugins.gradle.GradleUtil.GRADLE_SYSTEM_ID
 import org.gradle.tooling.BuildAction
 import java.io.File
 import java.util.*
