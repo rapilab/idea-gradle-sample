@@ -1,11 +1,16 @@
 package com.phodal.gradal.plugins.gradle
 
 import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.externalSystem.model.task.ExternalSystemTaskId
+import com.intellij.openapi.externalSystem.model.task.ExternalSystemTaskNotificationEvent
+import com.intellij.openapi.externalSystem.model.task.ExternalSystemTaskNotificationListener
+import com.intellij.openapi.externalSystem.model.task.ExternalSystemTaskNotificationListenerAdapter
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.ui.MessageType
 import com.intellij.util.ArrayUtil
 import com.intellij.util.Function
 import com.intellij.util.SystemProperties
+import com.phodal.gradal.plugins.gradle.invoker.NoopExternalSystemTaskNotificationListener
 import com.phodal.plugins.gradle.GradleProjectInfo
 import net.jcip.annotations.GuardedBy
 import org.gradle.tooling.*
@@ -49,6 +54,15 @@ class GradleTasksExecutorImpl(request: GradleBuildInvoker.Request) : GradleTasks
         val executionSettings = GradleExecutionSettings(null, null, DistributionType.LOCAL, null, false)
 
         val executeTasksFunction: Function<ProjectConnection, Void> = Function { connection ->
+            val executingTasksText = "Executing tasks: " + myRequest.getGradleTasks() + " in project " + myRequest.myBuildFilePath.path
+            addToEventLog(executingTasksText, MessageType.INFO)
+            val output = StringBuilder()
+
+            val id = myRequest.myTaskId
+            val taskListener: ExternalSystemTaskNotificationListener = NoopExternalSystemTaskNotificationListener()
+            taskListener.onStart(id, myRequest.myBuildFilePath.path)
+            taskListener.onTaskOutput(id, executingTasksText + SystemProperties.getLineSeparator() + SystemProperties.getLineSeparator(), true)
+
             val buildAction: BuildAction<*>? = myRequest.getBuildAction()
             val operation: LongRunningOperation;
 
@@ -58,11 +72,24 @@ class GradleTasksExecutorImpl(request: GradleBuildInvoker.Request) : GradleTasks
                 operation = connection.newBuild()
             }
 
+            GradleExecutionHelper.prepare(operation, id, executionSettings, object : ExternalSystemTaskNotificationListenerAdapter() {
+                override fun onStatusChange(event: ExternalSystemTaskNotificationEvent) {
+//                    if (myBuildStopper.contains(id)) {
+                        taskListener.onStatusChange(event)
+//                    }
+                }
+
+                override fun onTaskOutput(id: ExternalSystemTaskId, text: String, stdOut: Boolean) {
+                    output.append(text)
+//                    if (myBuildStopper.contains(id)) {
+                        taskListener.onTaskOutput(id, text, stdOut)
+//                    }
+                }
+            }, connection)
+
             val javaHome: String = SystemProperties.getJavaHome();
             operation.setJavaHome(File(javaHome))
 
-            val executingTasksText = "Executing tasks: " + myRequest.getGradleTasks() + " in project " + myRequest.myBuildFilePath.path
-            addToEventLog(executingTasksText, MessageType.INFO)
 
             if (isBuildWithGradle) {
                 (operation as BuildActionExecuter<*>).forTasks(*ArrayUtil.toStringArray(myRequest.getGradleTasks()))
