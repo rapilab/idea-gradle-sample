@@ -35,10 +35,11 @@
         <listener class="com.phodal.gradal.plugins.listeners.MyProjectManagerListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </projectListeners>
+
     <actions>
         <action id="Gradle.Get"
                 class="com.phodal.gradal.plugins.actions.BuildApkAction"
-                text="Run Get Gradle" description="Build App">
+                text="Assemble APK" description="Build android apk">
             <add-to-group group-id="ToolsMenu" anchor="first"/>
         </action>
     </actions>
