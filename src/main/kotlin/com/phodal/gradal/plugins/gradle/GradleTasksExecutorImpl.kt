@@ -100,6 +100,7 @@ class GradleTasksExecutorImpl(request: GradleBuildInvoker.Request) : GradleTasks
             val logMessage = "Build command line options:" + myRequest.getGradleTasks()
             getLogger().info(logMessage)
 
+            taskListener.onSuccess(id)
             null
         }
 

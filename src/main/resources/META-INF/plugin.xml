@@ -18,15 +18,16 @@
 
         <facetType implementation="com.phodal.gradal.plugins.gradle.facet.GradleFacetType"/>
 
+        <externalSystemOutputDispatcher implementation="com.phodal.gradal.plugins.gradle.build.output.GradleOutputParserDispatcherFactory"/>
         <externalSystemOutputParserProvider implementation="com.phodal.gradal.plugins.gradle.build.output.GradleOutputParserProvider"
                                             id="gradle" order="first"/>
 
-        <facet.toolWindow id="Build Variants"
-                          facetIdList="android,android-gradle"
-                          anchor="left"
-                          secondary="true"
-                          icon="PluginIcons.Console.Python"
-                          factoryClass="com.phodal.gradal.plugins.gradle.variant.view.BuildVariantToolWindowFactory"/>
+<!--        <facet.toolWindow id="Build Variants"-->
+<!--                          facetIdList="android,android-gradle"-->
+<!--                          anchor="left"-->
+<!--                          secondary="true"-->
+<!--                          icon="PluginIcons.Console.Python"-->
+<!--                          factoryClass="com.phodal.gradal.plugins.gradle.variant.view.BuildVariantToolWindowFactory"/>-->
 
         <projectService serviceImplementation="com.phodal.gradal.plugins.gradle.variant.view.BuildVariantView"/>
     </extensions>
