@@ -21,8 +21,6 @@
         <externalSystemOutputParserProvider implementation="com.phodal.gradal.plugins.gradle.build.output.GradleOutputParserProvider"
                                             id="gradle" order="first"/>
 
-        <projectImportProvider implementation="com.phodal.gradal.plugins.gradle.importing.AndroidGradleProjectImportProvider"/>
-        <projectImportBuilder implementation="com.phodal.gradal.plugins.gradle.importing.AndroidGradleProjectImportProvider$AndroidGradleImportBuilder"/>
         <facet.toolWindow id="Build Variants"
                           facetIdList="android,android-gradle"
                           anchor="left"
