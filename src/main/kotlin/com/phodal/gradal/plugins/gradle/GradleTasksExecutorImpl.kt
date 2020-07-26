@@ -12,6 +12,7 @@ import java.io.File
 
 
 class GradleTasksExecutorImpl(request: GradleBuildInvoker.Request) : GradleTasksExecutor(request.myProject) {
+    private lateinit var myProgressIndicator: ProgressIndicator
     private var myRequest: GradleBuildInvoker.Request = request
 
     @GuardedBy("myCompletionLock")
@@ -24,6 +25,16 @@ class GradleTasksExecutorImpl(request: GradleBuildInvoker.Request) : GradleTasks
     }
 
     override fun run(indicator: ProgressIndicator) {
+        myProgressIndicator = indicator
+
+        getLogger().info("Running")
+
+        invokeGradleTasks()
+
+        myProgressIndicator.stop()
+    }
+
+    private fun invokeGradleTasks() {
         val isBuildWithGradle = GradleProjectInfo.isBuildWithGradle(myRequest.myProject)
         val connector = GradleConnector.newConnector();
         connector.forProjectDirectory(myRequest.myBuildFilePath);
@@ -33,7 +44,7 @@ class GradleTasksExecutorImpl(request: GradleBuildInvoker.Request) : GradleTasks
         val operation: LongRunningOperation;
 
         if (buildAction != null) {
-            operation =  connection.action(buildAction)
+            operation = connection.action(buildAction)
         } else {
             operation = connection.newBuild()
         }
