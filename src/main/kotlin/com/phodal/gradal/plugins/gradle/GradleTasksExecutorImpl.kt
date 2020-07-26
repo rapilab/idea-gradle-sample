@@ -10,11 +10,14 @@ import net.jcip.annotations.GuardedBy
 import org.gradle.tooling.*
 import org.jetbrains.annotations.NotNull
 import java.io.File
+import org.jetbrains.plugins.gradle.service.execution.GradleExecutionHelper
 
 
 class GradleTasksExecutorImpl(request: GradleBuildInvoker.Request) : GradleTasksExecutor(request.myProject) {
     private lateinit var myProgressIndicator: ProgressIndicator
     private var myRequest: GradleBuildInvoker.Request = request
+
+    private val myHelper: GradleExecutionHelper = GradleExecutionHelper()
 
     @GuardedBy("myCompletionLock")
     private var myCompletionCounter = 0

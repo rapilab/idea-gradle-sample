@@ -41,6 +41,7 @@ repositories {
 dependencies {
     implementation("org.gradle:gradle-tooling-api:5.2.1")
     implementation(files("libs/kapt3-idea.jar"))
+    implementation(files("libs/gradle-common.jar"))
     runtime("org.slf4j:slf4j-simple:1.7.10")
 
     implementation(kotlin("stdlib-jdk8"))
