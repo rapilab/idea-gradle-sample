@@ -13,13 +13,15 @@ import java.util.concurrent.atomic.AtomicReference
 
 
 class GradleTasksExecutorImpl {
+    private val ASSEMBLE = "assemble"
+
     @NotNull
     private fun getLogger(): Logger {
         return Logger.getInstance(GradleTasksExecutorImpl::class.java)
     }
 
     fun executeTask(project: Project, projectPath: String, buildAction: BuildAction<*>?) {
-        val gradleTasks = arrayOf("build").toList()
+        val gradleTasks = arrayOf(ASSEMBLE).toList()
         val myProjectPath = File(projectPath)
 
         val request = GradleBuildInvoker.Request(project, myProjectPath, gradleTasks)
