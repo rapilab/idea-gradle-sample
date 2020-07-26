@@ -2,6 +2,7 @@ package com.phodal.gradal.plugins.gradle
 
 import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.externalSystem.model.task.ExternalSystemTaskId
+import com.intellij.openapi.externalSystem.model.task.ExternalSystemTaskNotificationListener
 import com.intellij.openapi.externalSystem.model.task.ExternalSystemTaskType
 import com.intellij.openapi.project.Project
 import com.phodal.gradal.plugins.gradle.data.service.GradleUtil.GRADLE_SYSTEM_ID
@@ -44,12 +45,13 @@ class GradleBuildInvoker(project: Project) {
                                             private val path: File,
                                             gradleTasks: List<String>,
                                             taskId: ExternalSystemTaskId = ExternalSystemTaskId.create(GRADLE_SYSTEM_ID, ExternalSystemTaskType.EXECUTE_TASK, myProject)) {
+        val myTaskListener: ExternalSystemTaskNotificationListener? = null
         private var myBuildAction: BuildAction<*>? = null
         private val myGradleTasks: List<String>
         private val myJvmArguments: MutableList<String>
         private val myCommandLineArguments: List<String>
         private val myEnv: Map<String, String>
-        private val myTaskId: ExternalSystemTaskId
+        val myTaskId: ExternalSystemTaskId
         val myBuildFilePath: File
 
         init {
