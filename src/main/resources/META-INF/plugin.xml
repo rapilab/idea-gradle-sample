@@ -8,8 +8,6 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <projectService serviceImplementation="com.phodal.gradal.plugins.gradle.GradleBuildInvoker"/>
-        <externalProjectDataService
-                implementation="com.phodal.gradal.plugins.gradle.data.service.PGradleModuleModelDataService"/>
 
         <facetType implementation="com.phodal.gradal.plugins.gradle.facet.GradleFacetType"/>
     </extensions>
