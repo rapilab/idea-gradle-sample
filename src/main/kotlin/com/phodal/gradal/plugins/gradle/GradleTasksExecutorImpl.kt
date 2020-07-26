@@ -59,7 +59,7 @@ class GradleTasksExecutorImpl(request: GradleBuildInvoker.Request) : GradleTasks
             val output = StringBuilder()
 
             val id = myRequest.myTaskId
-            val taskListener: ExternalSystemTaskNotificationListener = NoopExternalSystemTaskNotificationListener()
+            val taskListener: ExternalSystemTaskNotificationListener = myRequest.myTaskListener
             taskListener.onStart(id, myRequest.myBuildFilePath.path)
             taskListener.onTaskOutput(id, executingTasksText + SystemProperties.getLineSeparator() + SystemProperties.getLineSeparator(), true)
 
