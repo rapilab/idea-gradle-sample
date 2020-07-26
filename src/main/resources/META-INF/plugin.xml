@@ -18,8 +18,19 @@
 
         <facetType implementation="com.phodal.gradal.plugins.gradle.facet.GradleFacetType"/>
 
+        <externalSystemOutputParserProvider implementation="com.phodal.gradal.plugins.gradle.build.output.GradleOutputParserProvider"
+                                            id="gradle" order="first"/>
+
         <projectImportProvider implementation="com.phodal.gradal.plugins.gradle.importing.AndroidGradleProjectImportProvider"/>
         <projectImportBuilder implementation="com.phodal.gradal.plugins.gradle.importing.AndroidGradleProjectImportProvider$AndroidGradleImportBuilder"/>
+        <facet.toolWindow id="Build Variants"
+                          facetIdList="android,android-gradle"
+                          anchor="left"
+                          secondary="true"
+                          icon="PluginIcons.Console.Python"
+                          factoryClass="com.phodal.gradal.plugins.gradle.variant.view.BuildVariantToolWindowFactory"/>
+
+        <projectService serviceImplementation="com.phodal.gradal.plugins.gradle.variant.view.BuildVariantView"/>
     </extensions>
 
     <projectListeners>
