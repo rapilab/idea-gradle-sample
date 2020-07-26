@@ -3,9 +3,11 @@
 
 ## Process
 
-BuildApkAction -> OutputBuildActionUtil -> OutputBuildAction -> BulidPath
+start: BuildApkAction
 
-assemble ->
+1. prepare paths:  -> OutputBuildActionUtil -> OutputBuildAction -> BulidPath -> ProjectPaths
+2. prepare task & listener: assemble -> createRequest for Task Background -> createTask Listener for UI
+3. run tasks: GradleTasksExecutorImpl -> run -> invokeGradleTasks -> GradleExecutionHelper.execute
 
 ## notes
 
