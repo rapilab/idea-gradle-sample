@@ -1,66 +1,85 @@
-# Idea Gradle Sample for testing
+# Gardal: Idea Gradle Sample for testing
 
 
 ## notes
 
-build logs
+Gradal Build Logs:
 
-```
-Executing tasks: [:app:generateDebugSources, :app:generateDebugAndroidTestSources, :app:createMockableJar, :app:compileDebugAndroidTestSources, :app:compileDebugUnitTestSources, :app:compileDebugSources] in project /Users/fdhuang/IntelliJIDEAProjects/MyApplication
+```bash
+Executing tasks: [assemble] in project /Users/fdhuang/IntelliJIDEAProjects/MyApplication
 
+Starting Gradle Daemon...
+Gradle Daemon started in 892 ms
 > Task :app:preBuild UP-TO-DATE
 > Task :app:preDebugBuild UP-TO-DATE
-> Task :app:generateDebugBuildConfig UP-TO-DATE
-> Task :app:prepareLintJar UP-TO-DATE
-> Task :app:preDebugAndroidTestBuild SKIPPED
-> Task :app:prepareLintJarForPublish
 > Task :app:compileDebugAidl NO-SOURCE
+> Task :app:generateDebugBuildConfig UP-TO-DATE
 > Task :app:compileDebugRenderscript NO-SOURCE
-> Task :app:generateDebugSources
-> Task :app:compileDebugAndroidTestAidl NO-SOURCE
-> Task :app:extractDeepLinksDebug UP-TO-DATE
 > Task :app:mainApkListPersistenceDebug UP-TO-DATE
-> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
-> Task :app:processDebugManifest
-> Task :app:processDebugAndroidTestManifest
-> Task :app:compileDebugAndroidTestRenderscript NO-SOURCE
-> Task :app:generateDebugAndroidTestBuildConfig
-> Task :app:generateDebugAndroidTestSources
-> Task :app:createMockableJar UP-TO-DATE
 > Task :app:generateDebugResValues UP-TO-DATE
 > Task :app:generateDebugResources UP-TO-DATE
-> Task :app:mainApkListPersistenceDebugAndroidTest
-> Task :app:generateDebugAndroidTestResValues
-> Task :app:generateDebugAndroidTestResources
-> Task :app:preDebugUnitTestBuild UP-TO-DATE
-> Task :app:processDebugJavaRes NO-SOURCE
-> Task :app:processDebugUnitTestJavaRes NO-SOURCE
 > Task :app:mergeDebugResources UP-TO-DATE
-> Task :app:processDebugResources
-> Task :app:compileDebugKotlin
-> Task :app:mergeDebugAndroidTestResources
-> Task :app:javaPreCompileDebug
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :app:mergeDebugShaders UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugResources UP-TO-DATE
+> Task :app:compileDebugKotlin UP-TO-DATE
+> Task :app:javaPreCompileDebug UP-TO-DATE
 > Task :app:compileDebugJavaWithJavac UP-TO-DATE
-> Task :app:compileDebugUnitTestKotlin
-> Task :app:processDebugAndroidTestResources
 > Task :app:compileDebugSources UP-TO-DATE
-> Task :app:javaPreCompileDebugUnitTest
-> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
-> Task :app:compileDebugUnitTestSources UP-TO-DATE
-> Task :app:bundleDebugClasses
-> Task :app:compileDebugAndroidTestKotlin
-> Task :app:javaPreCompileDebugAndroidTest
+> Task :app:compileDebugShaders UP-TO-DATE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets UP-TO-DATE
+> Task :app:processDebugJavaRes NO-SOURCE
+> Task :app:mergeDebugJavaResource UP-TO-DATE
+> Task :app:dexBuilderDebug UP-TO-DATE
+> Task :app:checkDebugDuplicateClasses UP-TO-DATE
+> Task :app:mergeDebugJniLibFolders UP-TO-DATE
+> Task :app:validateSigningDebug UP-TO-DATE
+> Task :app:mergeDebugNativeLibs UP-TO-DATE
+> Task :app:mergeExtDexDebug UP-TO-DATE
+> Task :app:mergeDexDebug UP-TO-DATE
+> Task :app:stripDebugDebugSymbols UP-TO-DATE
+> Task :app:packageDebug UP-TO-DATE
+> Task :app:assembleDebug UP-TO-DATE
+> Task :app:preReleaseBuild UP-TO-DATE
+> Task :app:compileReleaseAidl NO-SOURCE
+> Task :app:compileReleaseRenderscript NO-SOURCE
+> Task :app:generateReleaseBuildConfig UP-TO-DATE
+> Task :app:mainApkListPersistenceRelease UP-TO-DATE
+> Task :app:generateReleaseResValues UP-TO-DATE
+> Task :app:generateReleaseResources UP-TO-DATE
+> Task :app:mergeReleaseResources UP-TO-DATE
+> Task :app:createReleaseCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksRelease UP-TO-DATE
+> Task :app:processReleaseManifest UP-TO-DATE
+> Task :app:processReleaseResources UP-TO-DATE
+> Task :app:compileReleaseKotlin UP-TO-DATE
+> Task :app:javaPreCompileRelease UP-TO-DATE
+> Task :app:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :app:compileReleaseSources UP-TO-DATE
+> Task :app:prepareLintJar UP-TO-DATE
+> Task :app:checkReleaseDuplicateClasses UP-TO-DATE
+> Task :app:lintVitalRelease
+> Task :app:dexBuilderRelease UP-TO-DATE
+> Task :app:mergeReleaseShaders UP-TO-DATE
+> Task :app:compileReleaseShaders UP-TO-DATE
+> Task :app:generateReleaseAssets UP-TO-DATE
+> Task :app:mergeReleaseAssets UP-TO-DATE
+> Task :app:mergeExtDexRelease UP-TO-DATE
+> Task :app:mergeDexRelease UP-TO-DATE
+> Task :app:processReleaseJavaRes NO-SOURCE
+> Task :app:mergeReleaseJavaResource UP-TO-DATE
+> Task :app:mergeReleaseJniLibFolders UP-TO-DATE
+> Task :app:mergeReleaseNativeLibs UP-TO-DATE
+> Task :app:stripReleaseDebugSymbols UP-TO-DATE
+> Task :app:packageRelease UP-TO-DATE
+> Task :app:assembleRelease
+> Task :app:assemble
 
-> Task :app:compileDebugAndroidTestJavaWithJavac
-warning: [options] source value 7 is obsolete and will be removed in a future release
-warning: [options] target value 7 is obsolete and will be removed in a future release
-warning: [options] To suppress warnings about obsolete options, use -Xlint:-options.
-3 warnings
-
-> Task :app:compileDebugAndroidTestSources
-
-BUILD SUCCESSFUL in 8s
-25 actionable tasks: 17 executed, 8 up-to-date
+BUILD SUCCESSFUL in 21s
+49 actionable tasks: 1 executed, 48 up-to-date
 ```
 
 Android Studio logs:
