@@ -101,6 +101,7 @@ class GradleTasksExecutorImpl(request: GradleBuildInvoker.Request) : GradleTasks
             getLogger().info(logMessage)
 
             taskListener.onSuccess(id)
+            taskListener.onEnd(id)
             null
         }
 

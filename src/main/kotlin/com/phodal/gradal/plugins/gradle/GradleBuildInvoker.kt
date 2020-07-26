@@ -3,9 +3,11 @@ package com.phodal.gradal.plugins.gradle
 import com.intellij.build.BuildConsoleUtils
 import com.intellij.build.BuildEventDispatcher
 import com.intellij.build.BuildViewManager
+import com.intellij.build.DefaultBuildDescriptor
 import com.intellij.build.events.FailureResult
 import com.intellij.build.events.impl.FinishBuildEventImpl
 import com.intellij.build.events.impl.SkippedResultImpl
+import com.intellij.build.events.impl.StartBuildEventImpl
 import com.intellij.build.events.impl.SuccessResultImpl
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.ServiceManager
@@ -84,14 +86,14 @@ class GradleBuildInvoker(project: Project) {
 //                    presentation.setText("Restart")
 //                    presentation.description = "Restart"
 //                    presentation.setIcon(AllIcons.Actions.Compile)
-//                    val eventTime = System.currentTimeMillis()
-//                    val event = StartBuildEventImpl(DefaultBuildDescriptor(id, executionName, workingDir, eventTime),
-//                            "running...")
+                    val eventTime = System.currentTimeMillis()
+                    val event = StartBuildEventImpl(DefaultBuildDescriptor(id, executionName, workingDir, eventTime),
+                            "running...")
 //                    event.withRestartAction(restartAction).withExecutionFilter(AndroidReRunBuildFilter(workingDir))
 //                    if (BuildAttributionUtil.isBuildAttributionEnabledForProject(myProject)) {
 //                        event.withExecutionFilter(BuildAttributionOutputLinkFilter())
 //                    }
-//                    myBuildEventDispatcher.onEvent(id, event)
+                    myBuildEventDispatcher.onEvent(id, event)
                 }
 
                 override fun onStatusChange(event: ExternalSystemTaskNotificationEvent) {
