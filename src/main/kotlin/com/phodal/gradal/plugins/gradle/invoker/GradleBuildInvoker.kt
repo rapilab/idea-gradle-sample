@@ -54,6 +54,10 @@ class GradleBuildInvoker(project: Project) {
                 .setBuildAction(buildAction)
                 .setTaskListener(buildTaskListener);
 
+        executeTasks(request)
+    }
+
+    private fun executeTasks(request: Request) {
         val executor: GradleTasksExecutor = GradleTasksExecutorImpl(request)
         executor.queue()
     }
