@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit
 
 class GradleBuildInvoker(project: Project) {
     private var myProject: Project = project
-    private val myBuildStopper: BuildStopper = BuildStopper()
+//    private val myBuildStopper: BuildStopper = BuildStopper()
 
     private val ASSEMBLE = "assemble"
 
@@ -77,24 +77,24 @@ class GradleBuildInvoker(project: Project) {
                 private var myBuildEventDispatcher = eventDispatcher
                 private var myBuildFailed = false
                 override fun onStart(id: ExternalSystemTaskId, workingDir: String) {
-                    val restartAction: AnAction = object : AnAction() {
-                        override fun update(e: AnActionEvent) {
-                            e.presentation.isEnabled = !myBuildStopper.contains(id)
-                        }
-
-                        override fun actionPerformed(e: AnActionEvent) {
-                            myBuildFailed = false
-                            // Recreate the reader since the one created with the listener can be already closed (see b/73102585)
-                            myBuildEventDispatcher.close()
-                            myBuildEventDispatcher = ExternalSystemEventDispatcher(request.myTaskId, buildViewManager)
-                            executeTasks(request)
-                        }
-                    }
+//                    val restartAction: AnAction = object : AnAction() {
+//                        override fun update(e: AnActionEvent) {
+//                            e.presentation.isEnabled = !myBuildStopper.contains(id)
+//                        }
+//
+//                        override fun actionPerformed(e: AnActionEvent) {
+//                            myBuildFailed = false
+//                            // Recreate the reader since the one created with the listener can be already closed (see b/73102585)
+//                            myBuildEventDispatcher.close()
+//                            myBuildEventDispatcher = ExternalSystemEventDispatcher(request.myTaskId, buildViewManager)
+//                            executeTasks(request)
+//                        }
+//                    }
                     myBuildFailed = false
-                    val presentation = restartAction.templatePresentation
-                    presentation.setText("Restart")
-                    presentation.description = "Restart"
-                    presentation.setIcon(PluginIcons.Console.Python)
+//                    val presentation = restartAction.templatePresentation
+//                    presentation.setText("Restart")
+//                    presentation.description = "Restart"
+//                    presentation.setIcon(PluginIcons.Console.Python)
                     val eventTime = System.currentTimeMillis()
                     val event = StartBuildEventImpl(DefaultBuildDescriptor(id, executionName, workingDir, eventTime),
                             "running...")
