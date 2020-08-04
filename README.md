@@ -1,15 +1,64 @@
-# Gardal: Idea Gradle Sample for testing
+# Android Studio 构建 APK 分析
+
+IDEA 是我日常使用最多的开发工具之一，大概仅次于 Firefox （Google 和 StackOverflow 是生产力）和 iTerm 2。因为研究编辑器和 IDE 的关系，我研究了一段时间的 IDEA 插件的相关机制。其中作为研究的主要对象是 Android Studio 对于 Android APK 的构建部分。
+
+总体的流程来说，还是比较简单的，所以太长不读版（可以直接看代码）：
+
+1. IDEA 逻辑部分：`plugin.xml` -> `BuildApkAction`
+2. 构建 Gradle 模块部分：-> OutputBuildActionUtil -> OutputBuildAction -> BulidPath -> ProjectPaths
+3. 准备 tasks 和 listener：assemble -> createRequest for Task Background -> createTask Listener for UI
+4. 执行 tasks： GradleTasksExecutorImpl -> run -> invokeGradleTasks -> GradleExecutionHelper.execute
+
+嗯，就是这么简单。在这里我采用的是和 Android Studio 插件类似的目录结构和路径，以方便于后期扩展和映射。
+
+## IDEA 入口
+
+就入口来说，Jetbrains 对于 IDEA 的配置还是蛮简洁的。只需要配置好对应的 `android-plugin.xml` 配置，然后编写对应的类实现即可：
+
+```xml
+<action id="Android.BuildApk" class="com.android.tools.idea.gradle.actions.BuildApkAction">
+    <add-to-group group-id="BuildMenu" relative-to-action="Android.GenerateSignedApk" anchor="before"/>
+</action>
+```
+
+接着，使用万能的 `Alt` + `Enter`，就能快速生成对应的类，并实现对应的方法。上述的配置中，还在菜单栏中添加了对应的构建命令。这样一来，对于用户来说，他们只需要点击一下，就可以执行对应类的 `actionPerformed` 方法。
+
+随后，我们就可以从父类中获取 `project` 相关的信息了：
+
+```java
+class BuildApkAction : AnAction() {
+    override fun actionPerformed(e: AnActionEvent) {
+        val project = e.project!!
+        val projectPath = project.basePath!!
+
+        val moduleManager = ModuleManager.getInstance(project)
+        val modules = moduleManager.modules
+        val buildAction = OutputBuildActionUtil.create(modules);
+
+        val invoker = GradleBuildInvoker.getInstance(project)
+        invoker.assemble(projectPath, buildAction);
+    }
+}
+```
+
+嗯，从主逻辑上来说，简化后的逻辑就是这么简单。
+
+## 构建 Gradle 模块
+
+就这个过程来说，稍微不太一样：
+
+1. 注册 `FacetType`，即 AndroidGradleFacetType
+2. 启动时，生成 `Facet` 配置
+3. 构建时，读取对应类似的 `Facet` 配置
+
+为了触发对应的类型构建，还需要由对应的插件来绑定对应的 type，如：`apply plugin: 'com.android.application'`
 
 
-## Process
+## 准备任务和监听器
 
-start: BuildApkAction
+## 执行任务
 
-1. prepare paths:  -> OutputBuildActionUtil -> OutputBuildAction -> BulidPath -> ProjectPaths
-2. prepare task & listener: assemble -> createRequest for Task Background -> createTask Listener for UI
-3. run tasks: GradleTasksExecutorImpl -> run -> invokeGradleTasks -> GradleExecutionHelper.execute
-
-## notes
+## 其它 - 笔记
 
 Gradal Build Logs:
 
