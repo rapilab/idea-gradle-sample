@@ -51,12 +51,96 @@ class BuildApkAction : AnAction() {
 2. 启动时，生成 `Facet` 配置
 3. 构建时，读取对应类似的 `Facet` 配置
 
-为了触发对应的类型构建，还需要由对应的插件来绑定对应的 type，如：`apply plugin: 'com.android.application'`
+为了触发对应的类型构建，还需要由对应的插件来绑定对应的 type，如 Android 里的：`apply plugin: 'com.android.application'`。
 
+随后，我们就可以调用 `OutputBuildActionUtil.create`，来创建包含生成所有模块的路径的 `BuildAction`：
+
+```kotlin
+fun create(modules: Array<Module>): OutputBuildAction? {
+    val moduleGradlePaths = getModuleGradlePaths(modules)
+    return OutputBuildAction(moduleGradlePaths)
+}
+
+private fun getModuleGradlePaths(modules: Array<Module>): Set<String> {
+    val gradlePaths = mutableSetOf<String>()
+    modules.mapNotNullTo(gradlePaths) {
+        val facet = GradleFacet.getInstance(it)
+        facet?.configuration?.GRADLE_PROJECT_PATH
+    }
+    return gradlePaths
+}
+```
+
+如上面的代码所示：在 `getModuleGradlePaths` 方法里会遍历 `GradleFacet` 中的模块信息，并取出 `GRADLE_PROJECT_PATH`
 
 ## 准备任务和监听器
 
+接着，我们就可以执行 `GradleBuildInvoker` 里的 `assemble` 方法，这里的代码就相对简单一些，主要是会准备一个 IDEA 相关的 `listener`：
+
+```kotlin
+private fun executeTaskRequest(request: Request, buildAction: BuildAction<*>?) {
+    val jvmArguments: List<String> = ArrayList()
+
+    val buildTaskListener = createBuildTaskListener(request, "Build")
+    request
+            .setJvmArguments(jvmArguments)
+            .setCommandLineArguments()
+            .setBuildAction(buildAction)
+            .setTaskListener(buildTaskListener);
+
+    executeTasks(request)
+}
+
+private fun executeTasks(request: Request) {
+    val executor: GradleTasksExecutor = GradleTasksExecutorImpl(request)
+    executor.queue()
+}
+```
+
+即上述代码中的 `createBuildTaskListener`，它实现了一个 IDEA 的 `ExternalSystemEventDispatcher`，用于辅助系统的通知显示。如 IDEA 中的 `Build` 的 ToolWindow，用于接收、显示 Gradle 的构建日志：
+
+```kotlin
+...
+override fun onTaskOutput(id: ExternalSystemTaskId, text: String, stdOut: Boolean) {
+    myBuildEventDispatcher.setStdOut(stdOut)
+    myBuildEventDispatcher.append(text)
+}
+...
+```
+
+于是，当我们真正执行构建任务的时候，就会在 `Build` 工具窗口中显示如下的信息：
+
+```bash
+Gradle Daemon started in 892 ms
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:compileDebugAidl NO-SOURCE
+...
+```
+
 ## 执行任务
+
+随后，真正开始执行 `GradleTasksExecutorImpl`，它继承自 `Backgroundable`，顾名思义就是在后台执行。执行的步骤主要是：
+
+1. 构建 Gradle 的 `LongRunningOperation`
+2. 为 Gradle 设置 JavaHome
+3. 添加构建任务
+4. 执行 operation
+
+主要的准备的执行代码如下所示：
+
+```kotlin
+val operation: LongRunningOperation; = connection.action(buildAction)
+val javaHome: String = SystemProperties.getJavaHome();
+            operation.setJavaHome(File(javaHome))
+
+(operation as BuildActionExecuter<*>).forTasks(*ArrayUtil.toStringArray(myRequest.getGradleTasks()))
+connection.use {
+    operation.run()
+}
+```
+
+随后，我们将调用 Gradle 及其插件中定义的 plugins 中的任务。
 
 ## 其它 - 笔记
 
